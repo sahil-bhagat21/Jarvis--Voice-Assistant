@@ -19,6 +19,7 @@ def speak(text):
     engine.runAndWait()
 
 def proceesCommand(c):
+   print(f"Command received:{c} " )
    if"open google" in c.lower():
        webbrowser.open("http://google.com")
    elif"open facebook" in c.lower():
@@ -32,15 +33,14 @@ def proceesCommand(c):
    elif"open Vlc" in c.lower():
           webbrowser.open("http://VLC.com")
    
-   elif c.lower().startwith("play"):
-        song = c.lower().split(" ")[1]
-        link = musiclibrary.music[song] 
-        webbrowser.open(link)
+   elif c.lower().startswith("play"):
+        song = c.lower().replace("play ", "").strip()
+        if song in musiclibrary.music:
+         link = musiclibrary.music[song] 
+         webbrowser.open(link)
 
    else:
-        # let openAI handel the request
-
-        pass
+        speak("sorry I can't do that")
 
         
 
@@ -68,8 +68,8 @@ if __name__ == "__main__":
 
                 with sr.Microphone() as source:
                   print("Jarvis Active...")
-                audio = r.listen(source) 
-                command = r.recognize_google(audio)
+                  audio = r.listen(source) 
+                  command = r.recognize_google(audio)
 
                 proceesCommand(command)
 
